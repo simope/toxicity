@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from rdkit import Chem
 from rdkit.Chem.rdFingerprintGenerator import GetMorganGenerator
+import os
 
 import config
 
@@ -44,8 +45,15 @@ def generate_labels(df: pd.DataFrame, target: str) -> np.ndarray:
     return df[target].to_numpy()
  
 def save_preprocessed(features: np.ndarray, labels: np.ndarray):
-    np.save("data/processed/features.npy", features)
-    np.save("data/processed/labels.npy", labels)
+    grandparent = "data"
+    parent = "processed"
+    features_filename = "features.npy"
+    labels_filename = "labels.npy"
+    features_path = os.path.join(grandparent, parent, features_filename)
+    labels_path = os.path.join(grandparent, parent, labels_filename)
+    os.makedirs(os.path.join(grandparent, parent), exist_ok=True)
+    np.save(features_path, features)
+    np.save(labels_path, labels)
 
 
 if __name__ == "__main__":
