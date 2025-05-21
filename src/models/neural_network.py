@@ -11,7 +11,7 @@ import torch.optim as optim
 from torch.utils.data import TensorDataset, DataLoader
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report, roc_auc_score
 
 from utils import load_features_target, save_report
 
@@ -99,7 +99,8 @@ def train_NN(epochs=20, batch_size=64, lr=1e-3, verbose=False, plot_loss=False):
 
         print("Classification report:")
         print(f"\n{classification_report(y_test, y_pred)}")
-        save_report(model_name="Neural Network", y_true=y_test, y_pred=y_pred)
+        print(f"ROC-AUC score: {roc_auc_score(y_true=y_test, y_score=probs):.2f}")
+        save_report(model_name="Neural Network", y_true=y_test, y_pred=y_pred, probs=probs)
 
     parent = "models"
     filename = "nn_model.pt"
